@@ -1,4 +1,4 @@
-package com.cydercode.universe.node;
+package com.cydercode.universe.node.websocket;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
