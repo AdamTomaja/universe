@@ -24,6 +24,10 @@ public class HelloScenario implements Scenario {
     @Override
     public void receiveMessage(String message) throws Exception {
         if (waiting) {
+            if (message.contains(" ")) {
+                player.sendMessage("Name must be one word");
+                return;
+            }
             player.setName(message);
             LOGGER.info("Player {} set name to {}", player.hashCode(), message);
             player.sendMessage("Ok, your name is " + message);

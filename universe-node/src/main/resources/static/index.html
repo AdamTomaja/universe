@@ -5,7 +5,11 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>Hello World!</h1>
+    <h1>Available commands:</h1>
+    <p><b>players</b> - list all connected players</p>
+    <p><b>player [player-name] - show informations about player</b></p>
+    <p><b>tell [player-name] [message]</b> - send a private message to player</p>
+    <p><b>go [up/down/left/right]</b> - make movement of one unit</p>
     <script type="text/javascript">
         ws = new WebSocket("ws://localhost:8080/universe");
         ws.onopen = function(ev){
@@ -16,5 +20,7 @@
             console.log("Message received: " + ev.data);
         }
     </script>
+
+
 </body>
 </html>
