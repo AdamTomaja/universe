@@ -46,4 +46,8 @@ public class Universe {
     public List<String> getPlayersNames() {
         return playersIndex.values().stream().map(player -> player.toString()).collect(Collectors.toList());
     }
+
+    public Optional<Player> findPlayerByName(String name) {
+        return playersIndex.values().stream().filter(player -> name.equals(player.getName())).findFirst();
+    }
 }
