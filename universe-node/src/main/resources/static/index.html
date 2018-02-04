@@ -1,26 +1,67 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Universe Terminal</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-    <h1>Available commands:</h1>
-    <p><b>players</b> - list all connected players</p>
-    <p><b>player [player-name] - show informations about player</b></p>
-    <p><b>tell [player-name] [message]</b> - send a private message to player</p>
-    <p><b>go [up/down/left/right]</b> - make movement of one unit</p>
-    <script type="text/javascript">
-        ws = new WebSocket("ws://localhost:8080/universe");
-        ws.onopen = function(ev){
-            console.log("connection opened");
-        }
+    <body>
+        <div class="container-fluid">
+            <h1>Universe Terminal</h1>
+            <form id="console-form">
+                <div class="row">
+                    <div class="col-sm">
+                        <textarea class="form-control" id="console-output" rows="15"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                        <input class="form-control" id="console-input" placeholder="Command">
+                    </div>
+                </div>
+            </form>
+        </div>
 
-        ws.onmessage = function(ev) {
-            console.log("Message received: " + ev.data);
-        }
-    </script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                var tcp = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+                var host = window.location.host;
+                var path = '/universe';
+                var ws = new WebSocket(tcp+host+path);
+
+                var output = $("#console-output");
+                var input = $("#console-input");
+
+                function println(text) {
+                    output.append(text + "\n");
+                }
+
+                function sendCommand(text) {
+                    ws.send(text);
+                }
+
+                ws.onopen = function() {
+                    console.log("Connected");
+                    println("Universe connected!");
+                }
+
+                ws.onmessage = function(ev) {
+                    println(ev.data);
+                }
+
+                $("#console-form").submit(function() {
+                    console.log("Submitted");
+                    console.log(input.val());
+                    sendCommand(input.val());
+                    return false;
+                });
 
 
-</body>
+            });
+        </script>
+    </body>
 </html>
