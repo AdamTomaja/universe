@@ -1,8 +1,10 @@
 package com.cydercode.universe.node.game;
 
+import com.cydercode.universe.node.game.bank.Bank;
 import com.cydercode.universe.node.game.scenario.HelloScenario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -16,6 +18,9 @@ import java.util.stream.Collectors;
 public class Universe {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Universe.class);
+
+    @Autowired
+    private Bank bank;
 
     private Map<WebSocketSession, Player> playersIndex = new ConcurrentHashMap<>();
 
@@ -54,6 +59,10 @@ public class Universe {
     public void removePlayer(Player player) {
         findSessionOfPlayer(player)
                 .ifPresent(session -> playersIndex.remove(session));
+    }
+
+    public Bank getBank() {
+        return bank;
     }
 
     public Optional<WebSocketSession> findSessionOfPlayer(Player player) {

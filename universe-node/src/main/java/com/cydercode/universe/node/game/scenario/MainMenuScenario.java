@@ -62,6 +62,10 @@ public class MainMenuScenario implements Scenario {
 
             player.sendMessage("Distance from " + otherPlayer.get().getName() + " is " + player.getPosition().distance(otherPlayer.get().getPosition()));
         });
+
+        put("bank", (player, command) -> {
+            player.startScenario(new BankScenario(player));
+        });
     }};
 
     public MainMenuScenario(Player player) {
@@ -85,11 +89,7 @@ public class MainMenuScenario implements Scenario {
                         LOGGER.error("Unable to execute command of player {}", player, e);
                     }
                 }, () -> {
-                    try {
-                        player.sendMessage("Unknown command");
-                    } catch (IOException e) {
-                        LOGGER.error("Unable to send message to player {}", player);
-                    }
+                    player.trySendMessage("Unknown command");
                 });
 
     }
