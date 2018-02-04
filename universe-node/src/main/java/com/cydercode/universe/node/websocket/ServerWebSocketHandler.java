@@ -11,6 +11,8 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.util.Optional;
+
 @Component
 public class ServerWebSocketHandler extends TextWebSocketHandler {
 
@@ -32,6 +34,11 @@ public class ServerWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        super.afterConnectionClosed(session, status);
+        LOGGER.info("Connection closed ");
+        Optional<Player> playerOptional = universe.findPlayerBySession(session);
+        playerOptional.ifPresent(player -> {
+            LOGGER.info("Removing player {} associated to session", player);
+            universe.removePlayer(player);
+        });
     }
 }

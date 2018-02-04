@@ -12,7 +12,7 @@ public class Player {
     private final WebSocketSession session;
 
     private Universe universe;
-    private Optional<String> name;
+    private Optional<String> name = Optional.empty();
     private Scenario currentScenario;
     private Vector2D position = new Vector2D(0, 0);
 

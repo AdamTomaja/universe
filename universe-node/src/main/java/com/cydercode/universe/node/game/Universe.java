@@ -50,4 +50,17 @@ public class Universe {
     public Optional<Player> findPlayerByName(String name) {
         return playersIndex.values().stream().filter(player -> name.equals(player.getName())).findFirst();
     }
+
+    public void removePlayer(Player player) {
+        findSessionOfPlayer(player)
+                .ifPresent(session -> playersIndex.remove(session));
+    }
+
+    public Optional<WebSocketSession> findSessionOfPlayer(Player player) {
+        return playersIndex.entrySet()
+                .stream()
+                .filter(entry -> player.equals(entry.getValue()))
+                .map(entry -> entry.getKey())
+                .findFirst();
+    }
 }
