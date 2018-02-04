@@ -66,6 +66,10 @@ public class MainMenuScenario implements Scenario {
         put("bank", (player, command) -> {
             player.startScenario(new BankScenario(player));
         });
+
+        put("admin", (player, command) -> {
+            player.startScenario(new AdminScenario(player));
+        });
     }};
 
     public MainMenuScenario(Player player) {
@@ -74,7 +78,7 @@ public class MainMenuScenario implements Scenario {
 
     @Override
     public void initialize() throws Exception {
-
+        player.trySendMessage("Main menu.");
     }
 
     @Override

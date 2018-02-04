@@ -12,6 +12,8 @@ public class Bank {
 
     private List<Account> accounts = new CopyOnWriteArrayList<>();
 
+    private Account bankAccount = new Account(null, 9999);
+
     public void createAccount(Player player) {
         Optional<Account> existingAccount = getAccountOfPlayer(player);
         existingAccount.ifPresent(account -> {
@@ -34,6 +36,12 @@ public class Bank {
             });
         }, () -> {
             throw new IllegalStateException("Player " + source + " has no account");
+        });
+    }
+
+    public void transfer(Player destination, double ammount) {
+        getAccountOfPlayer(destination).ifPresent(destinationAccount -> {
+            bankAccount.transferTo(destinationAccount, ammount);
         });
     }
 

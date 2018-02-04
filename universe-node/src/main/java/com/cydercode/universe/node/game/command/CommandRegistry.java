@@ -1,6 +1,7 @@
 package com.cydercode.universe.node.game.command;
 
 import com.cydercode.universe.node.game.Player;
+import com.cydercode.universe.node.game.scenario.MainMenuScenario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,12 @@ public class CommandRegistry {
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandRegistry.class);
 
     private Map<String, CommandExecutor> commands = new HashMap<>();
+
+    public CommandRegistry() {
+        addCommand("exit", (player, command) -> {
+            player.startScenario(new MainMenuScenario(player));
+        });
+    }
 
     public void addCommand(String command, CommandExecutor executor) {
         commands.put(command, executor);

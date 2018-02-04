@@ -48,11 +48,7 @@ public class BankScenario implements Scenario {
                     });
 
         });
-
-        commandRegistry.addCommand("exit", (player, command) -> {
-            player.startScenario(new MainMenuScenario(player));
-        });
-
+        
         player.sendMessage("Welcome in Bank!");
     }
 

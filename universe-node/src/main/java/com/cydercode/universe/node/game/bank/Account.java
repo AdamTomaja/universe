@@ -12,6 +12,11 @@ public class Account {
         this.player = player;
     }
 
+    public Account(Player player, double balance) {
+        this(player);
+        money = balance;
+    }
+
     public double getBalance() {
         return money;
     }
