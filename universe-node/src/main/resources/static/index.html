@@ -13,7 +13,7 @@
             <form id="console-form">
                 <div class="row">
                     <div class="col-sm">
-                        <textarea class="form-control" id="console-output" rows="15"></textarea>
+                        <textarea class="form-control" id="console-output" rows="30"></textarea>
                     </div>
                 </div>
                 <div class="row">
@@ -38,6 +38,7 @@
 
                 function println(text) {
                     output.append(text + "\n");
+                    $('#console-output').scrollTop($('#console-output')[0].scrollHeight);
                 }
 
                 function sendCommand(text) {
@@ -50,13 +51,15 @@
                 }
 
                 ws.onmessage = function(ev) {
-                    println(ev.data);
+                    println("> " + ev.data);
                 }
 
                 $("#console-form").submit(function() {
                     console.log("Submitted");
-                    console.log(input.val());
-                    sendCommand(input.val());
+                    var command = input.val();
+                    console.log(command);
+                    sendCommand(command);
+                    println(command);
                     input.val("");
                     return false;
                 });

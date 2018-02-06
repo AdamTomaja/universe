@@ -17,7 +17,7 @@ public class HelloScenario implements Scenario {
 
     @Override
     public void initialize() throws Exception {
-        player.sendMessage("Hello ! Whats Your name ? ");
+        player.sendMessage("Hello " + player + " ! Whats Your name ? ");
         waiting = true;
     }
 

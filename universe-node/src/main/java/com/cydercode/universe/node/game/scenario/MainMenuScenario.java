@@ -26,7 +26,7 @@ public class MainMenuScenario implements Scenario {
     @Override
     public void initialize() {
         player.trySendMessage("Welcome in Main Menu");
-
+        player.trySendMessage("Type \"help\" to get more informations");
         registry.addCommand("go", (player, command) -> {
             switch (command.getArgument(0)) {
                 case "up":
