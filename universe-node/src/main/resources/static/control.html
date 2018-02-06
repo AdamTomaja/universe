@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Universe Terminal</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+ </head>
+<body>
+<div class="container-fluid">
+    <canvas id="canvas" width="600" height="600" style="border:solid black 1px;">
+        Your browser does not support canvas element.
+    </canvas>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script type="text/javascript">
+
+            var mouse = false;
+            var size = 600;
+
+            $(document).ready(function(){
+                var canvas = $("#canvas");
+                var ws = new WebSocket("ws://192.168.0.50:81");
+                ws.onopen = function() {
+                    console.log("Connected to vehicle");
+                }
+
+                function sendDirections(drive, control, power) {
+                    var obj = {};
+                    obj["drive"] = drive;
+                    obj["control"] = control;
+                    obj["drive.pwm"] = "" + power;
+                    obj["control.pwm"] = "500";
+                    ws.send(JSON.stringify(obj));
+                }
+
+
+                function xToControl(x) {
+                    var half = size / 2;
+                    if(x < half - 50) {
+                        return "L";
+                    }
+
+                    if(x > half + 50) {
+                        return "R";
+                    }
+
+                    return "O";
+                }
+
+                function yToDrive(y) {
+                    var half = size / 2;
+                    if(y > half) {
+                        return "D";
+                    }
+
+                    if(y < half) {
+                        return "R";
+                    }
+
+                    return "P";
+                }
+
+                function yToPower(y) {
+                    var half = size / 2;
+                    return Math.abs(half - y);
+                }
+
+                $(canvas).mousedown(function() {
+                    console.log("Mouse down");
+                    mouse = true;
+                });
+
+                $(canvas).mouseup(function(){
+                    console.log("Mouse up");
+                    mouse = false;
+                    sendDirections("P", "O", 200);
+                });
+
+                $(canvas).mousemove(function(event){
+                    if(mouse) {
+                        var x = event.offsetX;
+                        var y = event.offsetY;
+
+                        sendDirections(yToDrive(y), xToControl(x), yToPower(y));
+
+                        console.log("Move !!!", x, y);
+                    }
+                });
+
+                var drive = "P";
+                var control = "O";
+                var power = 200;
+
+                setInterval(function(){
+                    if(drive != "P" ) {
+                        if(power < 500) {
+                            power = power + 50;
+                            sendDirections(drive, control, power);
+                        }
+                    } else {
+                        power = 50;
+                    }
+
+                    console.log(power);
+
+                }, 100);
+
+                $(document).keydown(function(event){
+                    if(event.key == "w") {
+                        drive = "R";
+                    }
+
+                    if(event.key == "s") {
+                        drive = "D";
+                    }
+
+                    if(event.key == "a") {
+                        control = "L";
+                    }
+
+                    if(event.key == "d") {
+                        control = "R";
+                    }
+
+
+                    if(event.key == "e") {
+                        power = 1000;
+                        sendDirections(drive, control, power);
+                    }
+
+                    document.power = 10;
+                    sendDirections(drive, control, power);
+                });
+
+                $(document).keyup(function(event) {
+                    if(event.key == "w" || event.key == "s") {
+                        drive = "P";
+                    }
+
+                    if(event.key == "a" || event.key == "d") {
+                        control = "O";
+                    }
+
+                    sendDirections(drive, control, power);
+                });
+
+
+            });
+        </script>
+</body>
+</html>

@@ -2,6 +2,7 @@ package com.cydercode.universe.node.game;
 
 import com.cydercode.universe.node.game.bank.Bank;
 import com.cydercode.universe.node.game.scenario.HelloScenario;
+import com.cydercode.universe.node.game.shop.Shop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class Universe {
 
     @Autowired
     private Bank bank;
+
+    @Autowired
+    private Shop shop;
 
     private Map<WebSocketSession, Player> playersIndex = new ConcurrentHashMap<>();
 
@@ -63,6 +67,10 @@ public class Universe {
 
     public Bank getBank() {
         return bank;
+    }
+
+    public Shop getShop() {
+        return shop;
     }
 
     public Optional<WebSocketSession> findSessionOfPlayer(Player player) {

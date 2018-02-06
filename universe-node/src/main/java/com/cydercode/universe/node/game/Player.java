@@ -1,5 +1,6 @@
 package com.cydercode.universe.node.game;
 
+import com.cydercode.universe.node.game.item.Item;
 import com.cydercode.universe.node.game.scenario.Scenario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +60,10 @@ public class Player {
     public void startScenario(Scenario scenario) throws Exception {
         this.currentScenario = scenario;
         scenario.initialize();
+    }
+
+    public void giveItem(Item item) {
+        items.add(item);
     }
 
     public Vector2D getPosition() {
