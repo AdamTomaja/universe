@@ -81,6 +81,19 @@ public class MainMenuScenario implements Scenario {
             player.startScenario(new AdminScenario(player));
         });
 
+        registry.addCommand("chat", (player, command) -> {
+            player.getUniverse().findPlayerByName(command.getArgument(0)).ifPresentOrElse(remotePlayer -> {
+                try {
+                    player.startScenario(new ChatScenario(player, remotePlayer));
+                    remotePlayer.startScenario(new ChatScenario(remotePlayer, player));
+                } catch (Exception e) {
+                    LOGGER.error("Unable to start scenario", e);
+                }
+            }, () -> {
+                player.trySendMessage("Player not found");
+            });
+        });
+
     }
 
     @Override
