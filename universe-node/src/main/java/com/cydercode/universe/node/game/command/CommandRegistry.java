@@ -5,12 +5,14 @@ import com.cydercode.universe.node.game.scenario.MainMenuScenario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.joining;
 
 public class CommandRegistry {
 
@@ -24,7 +26,14 @@ public class CommandRegistry {
         });
 
         addCommand("help", (player, command) -> {
-            player.trySendMessage("Available commands: " + getCommandNames().stream().collect(Collectors.joining(", ")));
+            player.trySendMessage("Available commands: " + getCommandNames().stream().collect(joining(", ")));
+        });
+
+        addCommand("me", (player, command) -> {
+            player.trySendMessage(Arrays.asList("Your name: " + player,
+                    "Bank account: " + player.getUniverse().getBank().getAccountOfPlayer(player),
+                    "Items: " + player.getItems()
+                    ).stream().collect(joining("\n")));
         });
     }
 

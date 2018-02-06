@@ -1,8 +1,9 @@
 package com.cydercode.universe.node.game.shop;
 
 import com.cydercode.universe.node.game.Player;
+import com.cydercode.universe.node.game.bank.Account;
+import com.cydercode.universe.node.game.bank.Transfer;
 import com.cydercode.universe.node.game.item.Car;
-import com.cydercode.universe.node.game.item.Item;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -12,23 +13,26 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Component
 public class Shop {
 
-    private final List<Item> items = new CopyOnWriteArrayList<>();
+    private final List<Offer> offers = new CopyOnWriteArrayList<>();
+
+    private Account account = new Account(null, 0);
 
     @PostConstruct
     public void init() {
-        items.add(new Car("BMW"));
-        items.add(new Car("AUDI"));
+        offers.add(new Offer(new Car("BMW"), 500));
+        offers.add(new Offer(new Car("AUDI"), 100));
     }
 
-    public List<Item> getItems() {
-        return items;
+    public List<Offer> getOffers() {
+        return offers;
     }
 
-    public void buy(Player player, Item item) {
-        if (items.remove(item)) {
-            player.giveItem(item);
+    public void buy(Player player, Offer offer) {
+        player.getUniverse().getBank().executeTransfer(player, account, offer.getPrice(), "Shop offer accepted: " + offer);
+        if (offers.remove(offer)) {
+            player.giveItem(offer.getItem());
         } else {
-            throw new IllegalStateException("Item not found");
+            throw new IllegalStateException("Offer not found");
         }
     }
 }

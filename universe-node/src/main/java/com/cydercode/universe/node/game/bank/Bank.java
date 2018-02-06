@@ -12,7 +12,7 @@ public class Bank {
 
     private List<Account> accounts = new CopyOnWriteArrayList<>();
 
-    private Account bankAccount = new Account(null, 9999);
+    private final Account bankAccount = new Account(null, 10000);
 
     public void createAccount(Player player) {
         Optional<Account> existingAccount = getAccountOfPlayer(player);
@@ -23,32 +23,37 @@ public class Bank {
         accounts.add(new Account(player));
     }
 
-    public void transfer(Player source, Player destination, double ammount) {
-        getAccountOfPlayer(source).ifPresentOrElse(sourceAccount -> {
-            getAccountOfPlayer(destination).ifPresentOrElse(destinationAccount -> {
-                if (sourceAccount.getBalance() >= ammount) {
-                    sourceAccount.transferTo(destinationAccount, ammount);
-                } else {
-                    throw new IllegalArgumentException("No found on account");
-                }
-            }, () -> {
-                throw new IllegalStateException("Destination player has no account!");
-            });
-        }, () -> {
-            throw new IllegalStateException("Player " + source + " has no account");
-        });
-    }
-
-    public void transfer(Player destination, double ammount) {
-        getAccountOfPlayer(destination).ifPresent(destinationAccount -> {
-            bankAccount.transferTo(destinationAccount, ammount);
-        });
-    }
-
     public Optional<Account> getAccountOfPlayer(Player player) {
         return accounts.stream()
                 .filter(account -> account.getPlayer().equals(player))
                 .findFirst();
     }
 
+    public void executeTransfer(Transfer transfer) {
+        getAccountOfPlayer(transfer.getSource()).ifPresentOrElse(sourceAccount -> {
+            getAccountOfPlayer(transfer.getDestination()).ifPresentOrElse(destinationAccount -> {
+                sourceAccount.transfer(destinationAccount, transfer);
+            }, () -> {
+                throw new IllegalStateException("Destination player has no account!");
+            });
+        }, () -> {
+            throw new IllegalStateException("Player " + transfer.getSource() + " has no account");
+        });
+    }
+
+    public void executeTransfer(Player player, double ammount, String title) {
+        Transfer transfer = new Transfer(null, player, ammount, title);
+        getAccountOfPlayer(player).ifPresent(account -> {
+            bankAccount.transfer(account, transfer);
+        });
+    }
+
+    public void executeTransfer(Player source, Account destinationAccount, double ammount, String title) {
+        Transfer transfer = new Transfer(source, null, ammount, title);
+        getAccountOfPlayer(source).ifPresentOrElse(account -> {
+            account.transfer(destinationAccount, transfer);
+        }, () -> {
+            throw new IllegalStateException(source + " has no account!");
+        });
+    }
 }

@@ -3,9 +3,12 @@ package com.cydercode.universe.node.game.scenario;
 import com.cydercode.universe.node.game.Player;
 import com.cydercode.universe.node.game.bank.Account;
 import com.cydercode.universe.node.game.bank.Bank;
+import com.cydercode.universe.node.game.bank.Transfer;
 import com.cydercode.universe.node.game.command.CommandRegistry;
 
 import java.util.Optional;
+
+import static java.util.stream.Collectors.joining;
 
 public class BankScenario implements Scenario {
 
@@ -40,7 +43,8 @@ public class BankScenario implements Scenario {
                     .findPlayerByName(destinationPlayerName)
                     .ifPresentOrElse(destinationPlayer -> {
                         double ammount = Double.parseDouble(command.getArgument(1));
-                        bank.transfer(player, destinationPlayer, ammount);
+                        Transfer transfer = new Transfer(player, destinationPlayer, ammount, "");
+                        bank.executeTransfer(transfer);
                         player.trySendMessage("Transfer OK");
                         destinationPlayer.trySendMessage("You`have got " + ammount + " UC from " + player);
                     }, () -> {
@@ -48,7 +52,18 @@ public class BankScenario implements Scenario {
                     });
 
         });
-        
+
+        commandRegistry.addCommand("history", (player, command) -> {
+            player.getUniverse().getBank().getAccountOfPlayer(player).ifPresentOrElse(account -> {
+                player.trySendMessage(account.getHistory()
+                        .stream()
+                        .map(Transfer::toString)
+                        .collect(joining("\n")));
+            }, () -> {
+                player.trySendMessage("You have no account in this bank!");
+            });
+        });
+
         player.sendMessage("Welcome in Bank!");
     }
 

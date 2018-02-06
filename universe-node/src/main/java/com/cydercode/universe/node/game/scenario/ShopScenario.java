@@ -2,7 +2,7 @@ package com.cydercode.universe.node.game.scenario;
 
 import com.cydercode.universe.node.game.Player;
 import com.cydercode.universe.node.game.command.CommandRegistry;
-import com.cydercode.universe.node.game.item.Item;
+import com.cydercode.universe.node.game.shop.Offer;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -14,7 +14,7 @@ public class ShopScenario implements Scenario {
 
     private CommandRegistry registry = new CommandRegistry();
 
-    private List<Item> items;
+    private List<Offer> offers;
 
     public ShopScenario(Player player) {
         this.player = player;
@@ -23,19 +23,19 @@ public class ShopScenario implements Scenario {
     @Override
     public void initialize() throws Exception {
         player.trySendMessage("Welcome in Shop!");
-        
+
         registry.addCommand("buy", (player, command) -> {
-            Item itemToBuy = items.get(Integer.parseInt(command.getArgument(0)));
-            player.getUniverse().getShop().buy(player, itemToBuy);
-            player.trySendMessage("You have new item: " + itemToBuy);
+            Offer offerToAccept = offers.get(Integer.parseInt(command.getArgument(0)));
+            player.getUniverse().getShop().buy(player, offerToAccept);
+            player.trySendMessage("You have new item: " + offerToAccept.getItem());
         });
 
         registry.addCommand("list", (player, command) -> {
-            items = player.getUniverse().getShop().getItems();
+            offers = player.getUniverse().getShop().getOffers();
             AtomicInteger atomicInteger = new AtomicInteger(0);
 
-            String itemsList = items.stream().map(item -> atomicInteger.getAndIncrement() + ". " + item.toString()).collect(Collectors.joining("\n"));
-            player.trySendMessage("Items in shop: \n" + itemsList);
+            String itemsList = offers.stream().map(item -> atomicInteger.getAndIncrement() + ". " + item.toString()).collect(Collectors.joining("\n"));
+            player.trySendMessage("Offers in shop: \n" + itemsList);
         });
     }
 

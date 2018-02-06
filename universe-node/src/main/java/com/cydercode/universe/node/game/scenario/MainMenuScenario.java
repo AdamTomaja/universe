@@ -99,7 +99,6 @@ public class MainMenuScenario implements Scenario {
     @Override
     public void receiveMessage(String message) throws Exception {
         registry.execute(player, message);
-        ParsedCommand parsedCommand = ParsedCommand.parse(message);
     }
 
     private void movePlayer(Player player, Vector2D movement) throws IOException {

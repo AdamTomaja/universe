@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Player {
+public class Player implements Named {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Player.class);
 
@@ -53,10 +53,6 @@ public class Player {
     }
 
 
-    public void setName(String name) {
-        this.name = Optional.of(name);
-    }
-
     public void startScenario(Scenario scenario) throws Exception {
         this.currentScenario = scenario;
         scenario.initialize();
@@ -83,7 +79,16 @@ public class Player {
         currentScenario.receiveMessage(payload);
     }
 
-    public String getName() {
-        return name.orElse("PL" + this.hashCode());
+    public void setName(String name) {
+        this.name = Optional.of(name);
+    }
+
+    @Override
+    public Optional<String> getRawName() {
+        return name;
+    }
+
+    public List<Item> getItems() {
+        return items;
     }
 }

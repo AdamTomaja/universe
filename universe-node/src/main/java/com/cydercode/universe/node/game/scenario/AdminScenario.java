@@ -18,7 +18,7 @@ public class AdminScenario implements Scenario {
         player.trySendMessage("Walcome in Admin mode!");
 
         registry.addCommand("earn", (player, command) -> {
-            player.getUniverse().getBank().transfer(player, Double.parseDouble(command.getArgument(0)));
+            player.getUniverse().getBank().executeTransfer(player, Double.parseDouble(command.getArgument(0)), "Admin transfer");
             player.sendMessage("You earned!");
         });
     }
