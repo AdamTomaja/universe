@@ -1,7 +1,9 @@
 package com.cydercode.universe.node.game.command;
 
+import com.cydercode.universe.node.game.item.Item;
 import com.cydercode.universe.node.game.player.Player;
 import com.cydercode.universe.node.game.scenario.MainMenuScenario;
+import com.cydercode.universe.node.game.scenario.Scenario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +14,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.cydercode.universe.node.game.command.CommandDescription.newCommand;
+import static java.lang.Integer.parseInt;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.joining;
 
@@ -22,6 +25,17 @@ public class CommandRegistry {
     private Map<String, CommandDescription> descriptions = new HashMap<>();
 
     public CommandRegistry() {
+
+        addCommand(CommandDescription.newCommand().withName("use")
+                .withExecutor((player, command) -> {
+                    Item item = player.getItems().get(parseInt(command.getArgument(0)));
+                    if(item instanceof Scenario) {
+                        player.startScenario((Scenario) item);
+                    } else {
+                        throw new IllegalArgumentException("This item can`t be used");
+                    }
+                })
+                .withParameter("item-index", String.class, false).build());
 
         addCommand(newCommand()
                 .withName("exit")

@@ -58,7 +58,7 @@ public class Player implements Named {
 
     public void startScenario(Scenario scenario) throws Exception {
         this.currentScenario = scenario;
-        scenario.initialize();
+        scenario.initialize(this);
     }
 
     public void giveItem(Item item) {
@@ -83,7 +83,7 @@ public class Player implements Named {
     }
 
     public void receiveMessage(String payload) throws Exception {
-        currentScenario.receiveMessage(payload);
+        currentScenario.receiveMessage(this, payload);
     }
 
     public void setPlayerRow(Optional<PlayerRow> playerRow) {
