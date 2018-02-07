@@ -1,6 +1,6 @@
 package com.cydercode.universe.node.game.scenario;
 
-import com.cydercode.universe.node.game.Player;
+import com.cydercode.universe.node.game.player.Player;
 import com.cydercode.universe.node.game.Vector2D;
 import com.cydercode.universe.node.game.command.CommandDescription;
 import com.cydercode.universe.node.game.command.CommandRegistry;

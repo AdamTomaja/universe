@@ -1,6 +1,8 @@
-package com.cydercode.universe.node.game;
+package com.cydercode.universe.node.game.player;
 
-import com.cydercode.universe.node.game.database.PlayerRow;
+import com.cydercode.universe.node.game.Named;
+import com.cydercode.universe.node.game.Universe;
+import com.cydercode.universe.node.game.Vector2D;
 import com.cydercode.universe.node.game.item.Item;
 import com.cydercode.universe.node.game.scenario.Scenario;
 import org.slf4j.Logger;
@@ -11,7 +13,6 @@ import org.springframework.web.socket.WebSocketSession;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Player implements Named {
 
@@ -25,7 +26,6 @@ public class Player implements Named {
 
     private Scenario currentScenario;
     private Vector2D position = new Vector2D(0, 0);
-    private List<Item> items = new CopyOnWriteArrayList<>();
 
     public Player(WebSocketSession session) {
         this.session = session;
@@ -62,7 +62,11 @@ public class Player implements Named {
     }
 
     public void giveItem(Item item) {
-        items.add(item);
+        if (!playerRow.isPresent()) {
+            throw new IllegalStateException("User must be logged in to receive items!");
+        }
+
+        getUniverse().getPlayersDatabase().giveItem(getPlayerRow(), item);
     }
 
     public Vector2D getPosition() {
@@ -95,7 +99,7 @@ public class Player implements Named {
     }
 
     public List<Item> getItems() {
-        return items;
+        return getPlayerRow().getItems();
     }
 
     @Override

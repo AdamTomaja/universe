@@ -1,9 +1,9 @@
 package com.cydercode.universe.node.game.shop;
 
-import com.cydercode.universe.node.game.Player;
+import com.cydercode.universe.node.game.player.Player;
 import com.cydercode.universe.node.game.bank.Account;
 import com.cydercode.universe.node.game.bank.Bank;
-import com.cydercode.universe.node.game.database.PlayersDatabase;
+import com.cydercode.universe.node.game.player.PlayersDatabase;
 import com.cydercode.universe.node.game.item.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

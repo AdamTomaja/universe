@@ -1,7 +1,8 @@
 package com.cydercode.universe.node.game;
 
 import com.cydercode.universe.node.game.bank.Bank;
-import com.cydercode.universe.node.game.database.PlayersDatabase;
+import com.cydercode.universe.node.game.player.PlayersDatabase;
+import com.cydercode.universe.node.game.player.Player;
 import com.cydercode.universe.node.game.scenario.MainMenuScenario;
 import com.cydercode.universe.node.game.shop.Shop;
 import org.slf4j.Logger;

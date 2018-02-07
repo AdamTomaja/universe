@@ -1,6 +1,6 @@
 package com.cydercode.universe.node.game.scenario;
 
-import com.cydercode.universe.node.game.Player;
+import com.cydercode.universe.node.game.player.Player;
 import com.cydercode.universe.node.game.bank.Account;
 import com.cydercode.universe.node.game.bank.Bank;
 import com.cydercode.universe.node.game.bank.Transfer;

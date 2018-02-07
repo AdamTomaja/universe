@@ -1,4 +1,4 @@
-package com.cydercode.universe.node.game.database;
+package com.cydercode.universe.node.game.player;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 

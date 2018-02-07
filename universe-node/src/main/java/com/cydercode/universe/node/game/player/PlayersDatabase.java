@@ -1,5 +1,6 @@
-package com.cydercode.universe.node.game.database;
+package com.cydercode.universe.node.game.player;
 
+import com.cydercode.universe.node.game.item.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,4 +41,8 @@ public class PlayersDatabase {
         throw new IllegalArgumentException("Player not found");
     }
 
+    public void giveItem(PlayerRow playerRow, Item item) {
+        playerRow.getItems().add(item);
+        playerRowRepository.save(playerRow);
+    }
 }

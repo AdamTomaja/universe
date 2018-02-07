@@ -1,6 +1,6 @@
 package com.cydercode.universe.node.game.scenario;
 
-import com.cydercode.universe.node.game.Player;
+import com.cydercode.universe.node.game.player.Player;
 import com.cydercode.universe.node.game.command.CommandRegistry;
 import com.cydercode.universe.node.game.shop.Offer;
 

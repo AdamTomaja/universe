@@ -1,8 +1,8 @@
 package com.cydercode.universe.node.game.bank;
 
-import com.cydercode.universe.node.game.Player;
-import com.cydercode.universe.node.game.database.PlayersDatabase;
-import com.cydercode.universe.node.game.database.PlayerRow;
+import com.cydercode.universe.node.game.player.Player;
+import com.cydercode.universe.node.game.player.PlayersDatabase;
+import com.cydercode.universe.node.game.player.PlayerRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

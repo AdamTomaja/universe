@@ -1,6 +1,6 @@
 package com.cydercode.universe.node.game.command;
 
-import com.cydercode.universe.node.game.Player;
+import com.cydercode.universe.node.game.player.Player;
 import com.cydercode.universe.node.game.scenario.MainMenuScenario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

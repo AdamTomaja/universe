@@ -1,6 +1,6 @@
 package com.cydercode.universe.node.websocket;
 
-import com.cydercode.universe.node.game.Player;
+import com.cydercode.universe.node.game.player.Player;
 import com.cydercode.universe.node.game.Universe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

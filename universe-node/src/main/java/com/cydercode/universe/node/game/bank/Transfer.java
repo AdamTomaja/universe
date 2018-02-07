@@ -1,6 +1,6 @@
 package com.cydercode.universe.node.game.bank;
 
-import com.cydercode.universe.node.game.database.PlayerRow;
+import com.cydercode.universe.node.game.player.PlayerRow;
 
 public class Transfer {
 

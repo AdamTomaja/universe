@@ -1,8 +1,6 @@
 package com.cydercode.universe.node.game.command;
 
-import com.cydercode.universe.node.game.Player;
-
-import java.io.IOException;
+import com.cydercode.universe.node.game.player.Player;
 
 public interface CommandExecutor {
 
