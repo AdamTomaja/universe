@@ -1,8 +1,9 @@
-package com.cydercode.universe.node.game.scenario;
+package com.cydercode.universe.node.game.player;
 
 import com.cydercode.universe.node.game.player.Player;
 import com.cydercode.universe.node.game.command.CommandDescription;
 import com.cydercode.universe.node.game.player.PlayerRow;
+import com.cydercode.universe.node.game.scenario.AbstractScenario;
 
 import static com.cydercode.universe.node.game.command.CommandDescription.newCommand;
 import static java.util.Optional.of;

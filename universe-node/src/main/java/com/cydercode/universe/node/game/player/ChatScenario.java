@@ -1,7 +1,8 @@
-package com.cydercode.universe.node.game.scenario;
+package com.cydercode.universe.node.game.player;
 
 import com.cydercode.universe.node.game.player.Player;
 import com.cydercode.universe.node.game.command.CommandRegistry;
+import com.cydercode.universe.node.game.scenario.Scenario;
 
 public class ChatScenario implements Scenario {
 

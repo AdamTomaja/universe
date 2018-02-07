@@ -1,10 +1,11 @@
-package com.cydercode.universe.node.game.scenario;
+package com.cydercode.universe.node.game.bank;
 
 import com.cydercode.universe.node.game.bank.Account;
 import com.cydercode.universe.node.game.bank.Bank;
 import com.cydercode.universe.node.game.bank.Transfer;
 import com.cydercode.universe.node.game.command.CommandRegistry;
 import com.cydercode.universe.node.game.player.Player;
+import com.cydercode.universe.node.game.scenario.Scenario;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
