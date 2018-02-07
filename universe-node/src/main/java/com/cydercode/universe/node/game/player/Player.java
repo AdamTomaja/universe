@@ -107,4 +107,8 @@ public class Player implements Named {
         return playerRow.map(row -> Optional.of(row.getName()))
                 .orElse(Optional.empty());
     }
+
+    public Scenario getScenario() {
+        return currentScenario;
+    }
 }

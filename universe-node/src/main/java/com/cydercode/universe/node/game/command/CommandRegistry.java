@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static com.cydercode.universe.node.game.command.CommandDescription.newCommand;
@@ -29,7 +30,7 @@ public class CommandRegistry {
         addCommand(CommandDescription.newCommand().withName("use")
                 .withExecutor((player, command) -> {
                     Item item = player.getItems().get(parseInt(command.getArgument(0)));
-                    if(item instanceof Scenario) {
+                    if (item instanceof Scenario) {
                         player.startScenario((Scenario) item);
                     } else {
                         throw new IllegalArgumentException("This item can`t be used");
@@ -74,9 +75,15 @@ public class CommandRegistry {
         addCommand(newCommand()
                 .withName("me")
                 .withExecutor((player, command) -> {
+                    AtomicInteger itemIndex = new AtomicInteger(0);
+
                     player.trySendMessage(Arrays.asList("Your name: " + player,
                             "Bank account: " + player.getUniverse().getBank().getAccountOfPlayer(player),
-                            "Items: " + player.getItems()
+                            "Items: \n" + player.getItems()
+                                    .stream()
+                                    .map(item -> String.format("%s. %s", itemIndex.incrementAndGet(), item.toString()))
+                                    .collect(joining("\n")),
+                            "Current scenario: " + player.getScenario().getClass().getSimpleName()
                     ).stream().collect(joining("\n")));
                 })
                 .build());
