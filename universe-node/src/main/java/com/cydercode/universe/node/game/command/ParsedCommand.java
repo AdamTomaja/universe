@@ -33,6 +33,10 @@ public class ParsedCommand {
         return arguments.get(index);
     }
 
+    public int getArgumentsCount() {
+        return arguments.size();
+    }
+
     public String getModule() {
         return module;
     }

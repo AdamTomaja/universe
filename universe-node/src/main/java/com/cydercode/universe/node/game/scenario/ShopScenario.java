@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static com.cydercode.universe.node.game.command.CommandDescription.newCommand;
+
 public class ShopScenario implements Scenario {
 
     private final Player player;
@@ -24,19 +26,23 @@ public class ShopScenario implements Scenario {
     public void initialize() throws Exception {
         player.trySendMessage("Welcome in Shop!");
 
-        registry.addCommand("buy", (player, command) -> {
-            Offer offerToAccept = offers.get(Integer.parseInt(command.getArgument(0)));
-            player.getUniverse().getShop().buy(player, offerToAccept);
-            player.trySendMessage("You have new item: " + offerToAccept.getItem());
-        });
+        registry.addCommand(newCommand()
+                .withName("buy")
+                .withExecutor((player, command) -> {
+                    Offer offerToAccept = offers.get(Integer.parseInt(command.getArgument(0)));
+                    player.getUniverse().getShop().buy(player, offerToAccept);
+                    player.trySendMessage("You have new item: " + offerToAccept.getItem());
+                }).build());
 
-        registry.addCommand("list", (player, command) -> {
-            offers = player.getUniverse().getShop().getOffers();
-            AtomicInteger atomicInteger = new AtomicInteger(0);
+        registry.addCommand(newCommand().
+                withName("list").
+                withExecutor((player, command) -> {
+                    offers = player.getUniverse().getShop().getOffers();
+                    AtomicInteger atomicInteger = new AtomicInteger(0);
 
-            String itemsList = offers.stream().map(item -> atomicInteger.getAndIncrement() + ". " + item.toString()).collect(Collectors.joining("\n"));
-            player.trySendMessage("Offers in shop: \n" + itemsList);
-        });
+                    String itemsList = offers.stream().map(item -> atomicInteger.getAndIncrement() + ". " + item.toString()).collect(Collectors.joining("\n"));
+                    player.trySendMessage("Offers in shop: \n" + itemsList);
+                }).build());
     }
 
     @Override
