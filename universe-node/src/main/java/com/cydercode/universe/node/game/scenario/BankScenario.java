@@ -1,15 +1,15 @@
 package com.cydercode.universe.node.game.scenario;
 
-import com.cydercode.universe.node.game.player.Player;
 import com.cydercode.universe.node.game.bank.Account;
 import com.cydercode.universe.node.game.bank.Bank;
 import com.cydercode.universe.node.game.bank.Transfer;
 import com.cydercode.universe.node.game.command.CommandRegistry;
+import com.cydercode.universe.node.game.player.Player;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.cydercode.universe.node.game.command.CommandDescription.newCommand;
-import static java.util.stream.Collectors.joining;
 
 public class BankScenario implements Scenario {
 
@@ -67,10 +67,15 @@ public class BankScenario implements Scenario {
                 .withName("history")
                 .withExecutor((player, command) -> {
                     player.getUniverse().getBank().getAccountOfPlayer(player.getPlayerRow()).ifPresentOrElse(account -> {
+                        player.trySendMessage("source,destination,ammount,title");
                         player.trySendMessage(account.getHistory()
                                 .stream()
-                                .map(Transfer::toString)
-                                .collect(joining("\n")));
+                                .map(transfer -> String.format("%s,%s,%s,%s",
+                                        transfer.getSource(),
+                                        transfer.getDestination(),
+                                        transfer.getAmmount(),
+                                        transfer.getTitle()))
+                                .collect(Collectors.joining("\n")));
                     }, () -> {
                         player.trySendMessage("You have no account in this bank!");
                     });

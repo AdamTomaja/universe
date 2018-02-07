@@ -1,8 +1,8 @@
 package com.cydercode.universe.node.game.bank;
 
 import com.cydercode.universe.node.game.player.Player;
-import com.cydercode.universe.node.game.player.PlayersDatabase;
 import com.cydercode.universe.node.game.player.PlayerRow;
+import com.cydercode.universe.node.game.player.PlayersDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,13 +19,13 @@ public class Bank {
 
     private List<Account> accounts = new CopyOnWriteArrayList<>();
 
-    private Account bankAccount;
 
     @Autowired
     private AccountRepository accountRepository;
 
     @Autowired
     private PlayersDatabase playersDatabase;
+    private PlayerRow bankUser;
 
     @PostConstruct
     public void init() {
@@ -35,7 +35,8 @@ public class Bank {
             playersDatabase.createUser(USERNAME, PASSWORD);
         }
 
-        bankAccount = createAndGetAccount(playersDatabase.login(USERNAME, PASSWORD), 100_000);
+        bankUser = playersDatabase.login(USERNAME, PASSWORD);
+        createAndGetAccount(bankUser, 100_000);
     }
 
     public Account createAndGetAccount(PlayerRow login) {
@@ -88,27 +89,11 @@ public class Bank {
         });
     }
 
-    public void executeTransfer(Player player, double ammount, String title) {
-        Transfer transfer = new Transfer(null, player.getPlayerRow(), ammount, title);
-        getAccountOfPlayer(player.getPlayerRow()).ifPresent(account -> {
-            bankAccount.transfer(account, transfer);
-            saveAccount(bankAccount);
-            saveAccount(account);
-        });
-    }
-
-    public void executeTransfer(Player source, Account destinationAccount, double ammount, String title) {
-        Transfer transfer = new Transfer(source.getPlayerRow(), null, ammount, title);
-        getAccountOfPlayer(source.getPlayerRow()).ifPresentOrElse(account -> {
-            account.transfer(destinationAccount, transfer);
-            saveAccount(destinationAccount);
-            saveAccount(account);
-        }, () -> {
-            throw new IllegalStateException(source + " has no account!");
-        });
-    }
-
     private void saveAccount(Account account) {
         accountRepository.save(account);
+    }
+
+    public PlayerRow getBankUser() {
+        return bankUser;
     }
 }

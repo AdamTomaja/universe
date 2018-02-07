@@ -1,10 +1,11 @@
 package com.cydercode.universe.node.game.shop;
 
-import com.cydercode.universe.node.game.player.Player;
-import com.cydercode.universe.node.game.bank.Account;
 import com.cydercode.universe.node.game.bank.Bank;
-import com.cydercode.universe.node.game.player.PlayersDatabase;
+import com.cydercode.universe.node.game.bank.Transfer;
 import com.cydercode.universe.node.game.item.Car;
+import com.cydercode.universe.node.game.player.Player;
+import com.cydercode.universe.node.game.player.PlayerRow;
+import com.cydercode.universe.node.game.player.PlayersDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,13 +21,13 @@ public class Shop {
 
     private final List<Offer> offers = new CopyOnWriteArrayList<>();
 
-    private Account account;
-
     @Autowired
     private PlayersDatabase playersDatabase;
 
     @Autowired
     private Bank bank;
+
+    private PlayerRow shopPlayerRow;
 
     @PostConstruct
     public void init() {
@@ -37,7 +38,8 @@ public class Shop {
             playersDatabase.createUser(USERNAME, PASSWORD);
         }
 
-        account = bank.createAndGetAccount(playersDatabase.login(USERNAME, PASSWORD));
+        shopPlayerRow = playersDatabase.login(USERNAME, PASSWORD);
+        bank.createAndGetAccount(shopPlayerRow);
     }
 
     public List<Offer> getOffers() {
@@ -45,7 +47,10 @@ public class Shop {
     }
 
     public void buy(Player player, Offer offer) {
-        player.getUniverse().getBank().executeTransfer(player, account, offer.getPrice(), "Shop offer accepted: " + offer);
+        player.getUniverse()
+                .getBank()
+                .executeTransfer(new Transfer(player.getPlayerRow(), shopPlayerRow, offer.getPrice(), "Shop offer accepted: " + offer));
+
         if (offers.remove(offer)) {
             player.giveItem(offer.getItem());
         } else {

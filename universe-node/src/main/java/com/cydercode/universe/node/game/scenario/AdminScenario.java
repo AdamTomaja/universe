@@ -1,7 +1,8 @@
 package com.cydercode.universe.node.game.scenario;
 
-import com.cydercode.universe.node.game.player.Player;
+import com.cydercode.universe.node.game.bank.Transfer;
 import com.cydercode.universe.node.game.command.CommandRegistry;
+import com.cydercode.universe.node.game.player.Player;
 
 import static com.cydercode.universe.node.game.command.CommandDescription.newCommand;
 
@@ -22,7 +23,10 @@ public class AdminScenario implements Scenario {
         registry.addCommand(newCommand()
                 .withName("earn")
                 .withExecutor((player, command) -> {
-                    player.getUniverse().getBank().executeTransfer(player, Double.parseDouble(command.getArgument(0)), "Admin transfer");
+                    player.getUniverse().getBank().executeTransfer(new Transfer(player.getUniverse().getBank().getBankUser(),
+                            player.getPlayerRow(),
+                            Double.parseDouble(command.getArgument(0)),
+                            "Admin Transfer"));
                     player.sendMessage("You earned!");
                 })
                 .build());

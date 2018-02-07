@@ -51,7 +51,7 @@ public class PlayerRow {
 
     @Override
     public String toString() {
-        return "PlayerRow{" +
+        return "{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 '}';
