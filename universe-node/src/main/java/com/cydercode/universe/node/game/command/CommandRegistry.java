@@ -79,6 +79,13 @@ public class CommandRegistry {
         ofNullable(descriptions.get(parsedCommand.getModule()))
                 .ifPresentOrElse(commandDescription -> {
                     try {
+                        if (parsedCommand.getArgumentsCount() < commandDescription.getParameters()
+                                .stream()
+                                .filter(arg -> !arg.isOptional())
+                                .count()) {
+                            throw new IllegalArgumentException("Not enough parameters");
+                        }
+
                         commandDescription.getExecutor().execute(player, parsedCommand);
                     } catch (Exception e) {
                         LOGGER.error("Unable to execute command of player {}", player, e);

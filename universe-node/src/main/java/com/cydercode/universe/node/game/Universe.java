@@ -1,6 +1,7 @@
 package com.cydercode.universe.node.game;
 
 import com.cydercode.universe.node.game.bank.Bank;
+import com.cydercode.universe.node.game.database.Database;
 import com.cydercode.universe.node.game.scenario.MainMenuScenario;
 import com.cydercode.universe.node.game.shop.Shop;
 import org.slf4j.Logger;
@@ -25,6 +26,9 @@ public class Universe implements Named {
 
     @Autowired
     private Shop shop;
+
+    @Autowired
+    private Database database;
 
     private Optional<String> name = Optional.empty();
 
@@ -74,6 +78,10 @@ public class Universe implements Named {
 
     public Shop getShop() {
         return shop;
+    }
+
+    public Database getDatabase() {
+        return database;
     }
 
     public Optional<WebSocketSession> findSessionOfPlayer(Player player) {

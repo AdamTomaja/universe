@@ -26,7 +26,7 @@ public class BankScenario implements Scenario {
         commandRegistry.addCommand(newCommand()
                 .withName("create")
                 .withExecutor((player, command) -> {
-                    player.getUniverse().getBank().createAccount(player);
+                    player.getUniverse().getBank().createAccount(player.getPlayerRow());
                     player.sendMessage("Bank account created!");
                 })
                 .build());
@@ -52,7 +52,7 @@ public class BankScenario implements Scenario {
                             .findPlayerByName(destinationPlayerName)
                             .ifPresentOrElse(destinationPlayer -> {
                                 double ammount = Double.parseDouble(command.getArgument(1));
-                                Transfer transfer = new Transfer(player, destinationPlayer, ammount, "");
+                                Transfer transfer = new Transfer(player.getPlayerRow(), destinationPlayer.getPlayerRow(), ammount, "");
                                 bank.executeTransfer(transfer);
                                 player.trySendMessage("Transfer OK");
                                 destinationPlayer.trySendMessage("You`have got " + ammount + " UC from " + player);
@@ -66,7 +66,7 @@ public class BankScenario implements Scenario {
         commandRegistry.addCommand(newCommand()
                 .withName("history")
                 .withExecutor((player, command) -> {
-                    player.getUniverse().getBank().getAccountOfPlayer(player).ifPresentOrElse(account -> {
+                    player.getUniverse().getBank().getAccountOfPlayer(player.getPlayerRow()).ifPresentOrElse(account -> {
                         player.trySendMessage(account.getHistory()
                                 .stream()
                                 .map(Transfer::toString)

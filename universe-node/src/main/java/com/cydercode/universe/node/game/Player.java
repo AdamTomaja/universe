@@ -1,5 +1,6 @@
 package com.cydercode.universe.node.game;
 
+import com.cydercode.universe.node.game.database.PlayerRow;
 import com.cydercode.universe.node.game.item.Item;
 import com.cydercode.universe.node.game.scenario.Scenario;
 import org.slf4j.Logger;
@@ -19,7 +20,9 @@ public class Player implements Named {
     private final WebSocketSession session;
 
     private Universe universe;
-    private Optional<String> name = Optional.empty();
+
+    private Optional<PlayerRow> playerRow = Optional.empty();
+
     private Scenario currentScenario;
     private Vector2D position = new Vector2D(0, 0);
     private List<Item> items = new CopyOnWriteArrayList<>();
@@ -79,16 +82,25 @@ public class Player implements Named {
         currentScenario.receiveMessage(payload);
     }
 
-    public void setName(String name) {
-        this.name = Optional.of(name);
+    public void setPlayerRow(Optional<PlayerRow> playerRow) {
+        this.playerRow = playerRow;
     }
 
-    @Override
-    public Optional<String> getRawName() {
-        return name;
+    public PlayerRow getPlayerRow() {
+        return playerRow.get();
+    }
+
+    public boolean isLoggedIn() {
+        return playerRow.isPresent();
     }
 
     public List<Item> getItems() {
         return items;
+    }
+
+    @Override
+    public Optional<String> getRawName() {
+        return playerRow.map(row -> Optional.of(row.getName()))
+                .orElse(Optional.empty());
     }
 }

@@ -1,26 +1,26 @@
 package com.cydercode.universe.node.game.bank;
 
-import com.cydercode.universe.node.game.Player;
+import com.cydercode.universe.node.game.database.PlayerRow;
 
 public class Transfer {
 
-    private final Player source;
-    private final Player destination;
+    private final PlayerRow source;
+    private final PlayerRow destination;
     private final double ammount;
     private final String title;
 
-    public Transfer(Player source, Player destination, double ammount, String title) {
+    public Transfer(PlayerRow source, PlayerRow destination, double ammount, String title) {
         this.source = source;
         this.destination = destination;
         this.ammount = ammount;
         this.title = title;
     }
 
-    public Player getSource() {
+    public PlayerRow getSource() {
         return source;
     }
 
-    public Player getDestination() {
+    public PlayerRow getDestination() {
         return destination;
     }
 

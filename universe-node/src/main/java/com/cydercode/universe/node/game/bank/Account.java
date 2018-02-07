@@ -1,27 +1,31 @@
 package com.cydercode.universe.node.game.bank;
 
-import com.cydercode.universe.node.game.Player;
+import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Account {
 
-    private final Player player;
+    @Id
+    private String id;
+
+    private  String playerID;
 
     private List<Transfer> journal = new CopyOnWriteArrayList<>();
 
     private double balance = 0;
 
-    public Account(Player player) {
-        this.player = player;
+    public Account() {
     }
 
-    public Account(Player player, double balance) {
-        this(player);
+    public Account(String playerID) {
+        this.playerID = playerID;
+    }
+
+    public Account(String playerID, double balance) {
+        this(playerID);
         this.balance = balance;
     }
 
@@ -29,8 +33,8 @@ public class Account {
         return balance;
     }
 
-    public Player getPlayer() {
-        return player;
+    public String getPlayerID() {
+        return playerID;
     }
 
     public void transfer(Account destinationAccount, Transfer transfer) {
@@ -50,15 +54,6 @@ public class Account {
 
     public List<Transfer> getHistory() {
         return new ArrayList<>(journal);
-    }
-
-    private Map<String, Object> createJournalRow(Player source, Player destination, double ammount, String title) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("source", source);
-        map.put("destination", destination);
-        map.put("ammount", ammount);
-        map.put("title", title);
-        return map;
     }
 
     @Override

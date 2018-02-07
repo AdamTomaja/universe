@@ -74,7 +74,8 @@ public class MainMenuScenario implements Scenario {
         registry.addCommand(forScenario("bank", new BankScenario(player)));
         registry.addCommand(forScenario("shop", new ShopScenario(player)));
         registry.addCommand(forScenario("admin", new AdminScenario(player)));
-
+        registry.addCommand(forScenario("account", new AccountManagementScenario(player)));
+        
         registry.addCommand(CommandDescription.newCommand().withName("chat").withExecutor((player, command) -> {
             player.getUniverse().findPlayerByName(command.getArgument(0)).ifPresentOrElse(remotePlayer -> {
                 try {
