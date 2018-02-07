@@ -14,7 +14,7 @@ public class AccountManagementScenario extends AbstractScenario {
         registry.addCommand(newCommand()
                 .withName("register")
                 .withExecutor((player, command) -> {
-                    PlayerRow row = player.getUniverse().getDatabase().createUser(command.getArgument(0), command.getArgument(1));
+                    PlayerRow row = player.getUniverse().getPlayersDatabase().createUser(command.getArgument(0), command.getArgument(1));
                     player.trySendMessage("Your id: " + row.getId());
                 })
                 .withParameter("username", String.class, false)
@@ -24,7 +24,7 @@ public class AccountManagementScenario extends AbstractScenario {
         registry.addCommand(CommandDescription.newCommand()
                 .withName("login")
                 .withExecutor((player, command) -> {
-                    PlayerRow row = player.getUniverse().getDatabase().login(command.getArgument(0), command.getArgument(1));
+                    PlayerRow row = player.getUniverse().getPlayersDatabase().login(command.getArgument(0), command.getArgument(1));
                     player.trySendMessage("You logged in with id " + row.getId());
                     player.setPlayerRow(of(row));
                 })

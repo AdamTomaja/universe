@@ -1,7 +1,7 @@
 package com.cydercode.universe.node.game.bank;
 
 import com.cydercode.universe.node.game.Player;
-import com.cydercode.universe.node.game.database.Database;
+import com.cydercode.universe.node.game.database.PlayersDatabase;
 import com.cydercode.universe.node.game.database.PlayerRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,17 +25,17 @@ public class Bank {
     private AccountRepository accountRepository;
 
     @Autowired
-    private Database database;
+    private PlayersDatabase playersDatabase;
 
     @PostConstruct
     public void init() {
         accounts.addAll(accountRepository.findAll());
 
-        if (!database.playerNameExists(USERNAME)) {
-            database.createUser(USERNAME, PASSWORD);
+        if (!playersDatabase.playerNameExists(USERNAME)) {
+            playersDatabase.createUser(USERNAME, PASSWORD);
         }
 
-        bankAccount = createAndGetAccount(database.login(USERNAME, PASSWORD), 100_000);
+        bankAccount = createAndGetAccount(playersDatabase.login(USERNAME, PASSWORD), 100_000);
     }
 
     public Account createAndGetAccount(PlayerRow login) {

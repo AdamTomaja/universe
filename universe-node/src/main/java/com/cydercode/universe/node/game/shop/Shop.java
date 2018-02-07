@@ -3,8 +3,7 @@ package com.cydercode.universe.node.game.shop;
 import com.cydercode.universe.node.game.Player;
 import com.cydercode.universe.node.game.bank.Account;
 import com.cydercode.universe.node.game.bank.Bank;
-import com.cydercode.universe.node.game.database.Database;
-import com.cydercode.universe.node.game.database.PlayerRow;
+import com.cydercode.universe.node.game.database.PlayersDatabase;
 import com.cydercode.universe.node.game.item.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,7 +23,7 @@ public class Shop {
     private Account account;
 
     @Autowired
-    private Database database;
+    private PlayersDatabase playersDatabase;
 
     @Autowired
     private Bank bank;
@@ -34,11 +33,11 @@ public class Shop {
         offers.add(new Offer(new Car("BMW"), 500));
         offers.add(new Offer(new Car("AUDI"), 100));
 
-        if (!database.playerNameExists(USERNAME)) {
-            database.createUser(USERNAME, PASSWORD);
+        if (!playersDatabase.playerNameExists(USERNAME)) {
+            playersDatabase.createUser(USERNAME, PASSWORD);
         }
 
-        account = bank.createAndGetAccount(database.login(USERNAME, PASSWORD));
+        account = bank.createAndGetAccount(playersDatabase.login(USERNAME, PASSWORD));
     }
 
     public List<Offer> getOffers() {
